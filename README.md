@@ -28,16 +28,30 @@ nix run github:pr0d1r2/nix-semble
 
 ## MCP server
 
-This package provides the `semble` CLI only. The `mcp` extra is not packaged, because it needs `mcp>=2.0` and nixpkgs has 1.x.
+This package includes the `mcp` extra, with mcp 2.x from [nix-mcp-python-sdk](https://github.com/pr0d1r2/nix-mcp-python-sdk) (nixpkgs ships 1.x). Running `semble` with no subcommand starts the MCP server over stdio, exposing the `search` and `find_related` tools.
 
-`semble install` configures coding agents with an MCP server entry that runs `uvx --from "semble[mcp]==<version>" semble`. That entry needs [uv](https://github.com/astral-sh/uv) on the agent's PATH, and uvx fetches semble from PyPI instead of using this Nix build.
+Point an agent at the Nix-built binary, for example in Claude Code:
 
-On NixOS, `uv` on PATH is not enough. By default uvx downloads a standalone Python, which cannot start without [nix-ld](https://github.com/nix-community/nix-ld); native wheels pulled from PyPI may also need library paths. Two setups work for the agent process:
+```json
+{
+  "mcpServers": {
+    "semble": {
+      "command": "/nix/store/...-python3.13-semble-0.7.2/bin/semble"
+    }
+  }
+}
+```
+
+Use the store path from your profile or `nix build github:pr0d1r2/nix-semble`, or `semble` on PATH when installed through a profile.
+
+### `semble install`
+
+`semble install` writes MCP entries that run `uvx --from "semble[mcp]==<version>" semble` instead of this binary. Those entries need [uv](https://github.com/astral-sh/uv) on the agent's PATH, and uvx fetches semble from PyPI. Configure the entry by hand, as above, to use this Nix build.
+
+If you keep the uvx entries on NixOS, `uv` on PATH is not enough. By default uvx downloads a standalone Python, which cannot start without [nix-ld](https://github.com/nix-community/nix-ld); native wheels pulled from PyPI may also need library paths. Two setups work for the agent process:
 
 - Enable `programs.nix-ld.enable = true;`, which lets uvx's downloaded Python and wheels run.
 - Point uvx at a Nix Python instead: set `UV_PYTHON_DOWNLOADS=never` and `UV_PYTHON` to a Nix-provided interpreter, for example `${pkgs.python313}/bin/python3`. nixpkgs' Python is not loaded through nix-ld, so `NIX_LD_LIBRARY_PATH` does not apply to it. Wheels with native code then need `LD_LIBRARY_PATH` in the agent's environment, pointing at the Nix libraries they link against (for example `lib.makeLibraryPath [ pkgs.stdenv.cc.cc.lib pkgs.zlib ]`).
-
-[nix-mcp-python-sdk](https://github.com/pr0d1r2/nix-mcp-python-sdk) packages mcp 2.x, which lets a future version of this package run the MCP server from the Nix build with no uvx at all.
 
 ## Binary cache
 

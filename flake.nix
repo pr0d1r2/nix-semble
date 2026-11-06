@@ -28,6 +28,13 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+    nix-mcp-python-sdk = {
+      url = "github:pr0d1r2/nix-mcp-python-sdk";
+      inputs = {
+        nixpkgs-lock.follows = "nixpkgs-lock";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     nix-vicinity = {
       url = "github:pr0d1r2/nix-vicinity";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,6 +48,7 @@
       nix-lefthook,
       nix-model2vec,
       nix-semble-grammars,
+      nix-mcp-python-sdk,
       nix-vicinity,
       ...
     }:
@@ -61,6 +69,7 @@
         {
           model2vec = nix-model2vec.packages.${sys}.default;
           semble-grammars = nix-semble-grammars.packages.${sys}.default;
+          mcp = nix-mcp-python-sdk.packages.${sys}.mcp;
           vicinity = nix-vicinity.packages.${sys}.default;
         };
     in
