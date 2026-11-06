@@ -30,19 +30,23 @@ nix run github:pr0d1r2/nix-semble
 
 This package includes the `mcp` extra, with mcp 2.x from [nix-mcp-python-sdk](https://github.com/pr0d1r2/nix-mcp-python-sdk) (nixpkgs ships 1.x). Running `semble` with no subcommand starts the MCP server over stdio, exposing the `search` and `find_related` tools.
 
-Point an agent at the Nix-built binary, for example in Claude Code:
+Install it into a profile (home-manager, nix-darwin, NixOS, or `nix profile install github:pr0d1r2/nix-semble`), then point an agent at the profile's binary, for example in Claude Code:
 
 ```json
 {
   "mcpServers": {
     "semble": {
-      "command": "/nix/store/...-python3.13-semble-0.7.2/bin/semble"
+      "command": "/etc/profiles/per-user/<user>/bin/semble"
     }
   }
 }
 ```
 
-Use the store path from your profile or `nix build github:pr0d1r2/nix-semble`, or `semble` on PATH when installed through a profile.
+Use a profile path such as `/etc/profiles/per-user/<user>/bin/semble` or `~/.nix-profile/bin/semble`, not a raw `/nix/store/...` path. Those profile paths survive upgrades and garbage collection. A store path from `nix build` stays alive only while its `result` link or another GC root exists.
+
+Prefer the default stdio transport. `semble --http` serves the same tools on a local port with no authentication, so any local user or process that can reach the port can search whatever the server user can read.
+
+This flake needs nixpkgs `nixos-26.05` or newer (it follows nixpkgs-lock). nix-mcp-python-sdk builds httpx2 and httpcore2 2.16.0 from nixpkgs' recipes, which `nixos-25.11` lacks.
 
 ### `semble install`
 
