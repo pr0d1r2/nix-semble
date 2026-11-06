@@ -6,7 +6,7 @@ Standalone Nix package for [semble](https://github.com/semble-dev/semble) — in
 
 ## §C CONSTRAINTS
 
-- C1: Nix flake, pinned `nixos-25.11`
+- C1: Nix flake, nixpkgs follows `github:pr0d1r2/nixpkgs-lock` (fleet pin, currently `nixos-26.05`)
 - C2: 4 systems: aarch64-darwin, x86_64-darwin, x86_64-linux, aarch64-linux
 - C3: Source pinned as `flake = false` input
 - C4: Python build via `buildPythonPackage` — setuptools backend
