@@ -5,12 +5,12 @@
 }:
 pkgs.python313Packages.buildPythonPackage {
   pname = "semble";
-  version = "0.3.1";
+  version = "0.7.2";
   pyproject = true;
 
   inherit src;
 
-  env.SETUPTOOLS_SCM_PRETEND_VERSION = "0.3.1";
+  env.SETUPTOOLS_SCM_PRETEND_VERSION = "0.7.2";
 
   build-system = with pkgs.python313Packages; [
     setuptools
@@ -23,12 +23,12 @@ pkgs.python313Packages.buildPythonPackage {
       numpy
       orjson
       pathspec
-      tree-sitter
+      questionary
+      tqdm
     ]
     ++ (with deps; [
-      bm25s
       model2vec
-      tree-sitter-language-pack
+      semble-grammars
       vicinity
     ]);
 
