@@ -11,7 +11,7 @@ Standalone Nix package for [semble](https://github.com/MinishLab/semble) — ins
 - C3: Source pinned as `flake = false` input
 - C4: Python build via `buildPythonPackage` — setuptools backend
 - C5: 3 external dep flake inputs: nix-model2vec (>=0.10,<0.11), nix-vicinity, nix-semble-grammars. nixpkgs provides numpy, orjson, pathspec, questionary, tqdm
-- C6: MCP extra (`mcp>=2.0,<3.0`) not packaged; nixpkgs has mcp 1.x. `semble install` writes agent MCP configs that run `uvx --from "semble[mcp]==<version>" semble`, so they need `uv` on the agent's PATH and fetch semble from PyPI. On NixOS, uvx's downloaded Python needs nix-ld, or `UV_PYTHON_DOWNLOADS=never` plus `UV_PYTHON` pointing at a Nix interpreter. Documented in README; this package does not bundle uv
+- C6: MCP extra (`mcp>=2.0,<3.0`) not packaged; nixpkgs has mcp 1.x. `semble install` writes agent MCP configs that run `uvx --from "semble[mcp]==<version>" semble`, so they need `uv` on the agent's PATH and fetch semble from PyPI. On NixOS, uvx's downloaded Python needs nix-ld, or `UV_PYTHON_DOWNLOADS=never` plus `UV_PYTHON` pointing at a Nix interpreter, with `LD_LIBRARY_PATH` for native wheels (nix-ld's `NIX_LD_LIBRARY_PATH` does not reach nixpkgs Python). Documented in README; this package does not bundle uv
 - C7: Tests disabled — require model downloads
 - C8: cachix binary cache in `nixConfig`
 - C9: nix-lefthook single input for all CI tooling
