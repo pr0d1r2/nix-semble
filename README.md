@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/pr0d1r2/nix-semble/actions/workflows/ci.yml/badge.svg)](https://github.com/pr0d1r2/nix-semble/actions/workflows/ci.yml)
 
-Nix package for [semble](https://github.com/semble-dev/semble) — instant code search for any local or remote git repository. Pre-built binaries served via [cachix](https://pr0d1r2.cachix.org).
+Nix package for [semble](https://github.com/MinishLab/semble) — instant code search for any local or remote git repository. Pre-built binaries served via [cachix](https://pr0d1r2.cachix.org).
 
 ## Usage
 

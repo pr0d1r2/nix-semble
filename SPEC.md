@@ -2,16 +2,16 @@
 
 ## §G GOAL
 
-Standalone Nix package for [semble](https://github.com/semble-dev/semble) — instant code search for any local or remote git repository. Full `buildPythonPackage` build (not uvx wrapper). Deps not in nixpkgs sourced from companion repos (nix-bm25s, nix-model2vec, nix-vicinity, nix-tree-sitter-language-pack). Pre-built via cachix (`pr0d1r2.cachix.org`).
+Standalone Nix package for [semble](https://github.com/MinishLab/semble) — instant code search for any local or remote git repository. Full `buildPythonPackage` build (not uvx wrapper). Deps not in nixpkgs sourced from companion repos (nix-model2vec, nix-vicinity, nix-semble-grammars). Pre-built via cachix (`pr0d1r2.cachix.org`).
 
 ## §C CONSTRAINTS
 
 - C1: Nix flake, nixpkgs follows `github:pr0d1r2/nixpkgs-lock` (fleet pin, currently `nixos-26.05`)
-- C2: 3 systems: aarch64-darwin, x86_64-linux, aarch64-linux. x86_64-darwin blocked: nix-tree-sitter-language-pack exports no x86_64-darwin package (dependency dropped in semble v0.7.2)
+- C2: 4 systems: aarch64-darwin, x86_64-darwin, x86_64-linux, aarch64-linux
 - C3: Source pinned as `flake = false` input
 - C4: Python build via `buildPythonPackage` — setuptools backend
-- C5: 4 external dep flake inputs: nix-bm25s, nix-model2vec, nix-vicinity, nix-tree-sitter-language-pack
-- C6: tree-sitter-language-pack 1.8.1 exceeds semble's `<1.8.0` constraint — accepted (no breaking changes, constraint is conservative upper bound)
+- C5: 3 external dep flake inputs: nix-model2vec (>=0.10,<0.11), nix-vicinity, nix-semble-grammars. nixpkgs provides numpy, orjson, pathspec, questionary, tqdm
+- C6: MCP extra (`mcp>=2.0,<3.0`) not packaged; nixpkgs has mcp 1.x
 - C7: Tests disabled — require model downloads
 - C8: cachix binary cache in `nixConfig`
 - C9: nix-lefthook single input for all CI tooling
@@ -25,7 +25,7 @@ Standalone Nix package for [semble](https://github.com/semble-dev/semble) — in
 
 ## §V VERSIONING
 
-- semble version: pinned in semble.nix (currently 0.3.1)
+- semble version: pinned in semble.nix (currently 0.7.2)
 - Bump: update `semble-src` input URL tag + version in semble.nix + dep inputs
 
 ## §T TESTING

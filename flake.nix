@@ -10,24 +10,23 @@
     nixpkgs-lock.url = "github:pr0d1r2/nixpkgs-lock";
     nixpkgs.follows = "nixpkgs-lock/nixpkgs";
     semble-src = {
-      url = "github:MinishLab/semble/v0.3.1";
+      url = "github:MinishLab/semble/v0.7.2";
       flake = false;
     };
     nix-lefthook = {
       url = "github:pr0d1r2/nix-lefthook";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-bm25s = {
-      url = "github:pr0d1r2/nix-bm25s";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-model2vec = {
       url = "github:pr0d1r2/nix-model2vec";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-tree-sitter-language-pack = {
-      url = "github:pr0d1r2/nix-tree-sitter-language-pack";
-      inputs.nixpkgs.follows = "nixpkgs";
+    nix-semble-grammars = {
+      url = "github:pr0d1r2/nix-semble-grammars";
+      inputs = {
+        nixpkgs-lock.follows = "nixpkgs-lock";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     nix-vicinity = {
       url = "github:pr0d1r2/nix-vicinity";
@@ -40,15 +39,15 @@
       nixpkgs,
       semble-src,
       nix-lefthook,
-      nix-bm25s,
       nix-model2vec,
-      nix-tree-sitter-language-pack,
+      nix-semble-grammars,
       nix-vicinity,
       ...
     }:
     let
       supportedSystems = [
         "aarch64-darwin"
+        "x86_64-darwin"
         "x86_64-linux"
         "aarch64-linux"
       ];
@@ -60,9 +59,8 @@
           sys = pkgs.stdenv.hostPlatform.system;
         in
         {
-          bm25s = nix-bm25s.packages.${sys}.default;
           model2vec = nix-model2vec.packages.${sys}.default;
-          tree-sitter-language-pack = nix-tree-sitter-language-pack.packages.${sys}.default;
+          semble-grammars = nix-semble-grammars.packages.${sys}.default;
           vicinity = nix-vicinity.packages.${sys}.default;
         };
     in
