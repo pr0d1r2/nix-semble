@@ -27,12 +27,17 @@ pkgs.python313Packages.buildPythonPackage {
       tqdm
     ]
     ++ (with deps; [
+      # semble[mcp]: a bare `semble` invocation runs the MCP server.
+      mcp
       model2vec
       semble-grammars
       vicinity
     ]);
 
-  pythonImportsCheck = [ "semble" ];
+  pythonImportsCheck = [
+    "semble"
+    "semble.mcp"
+  ];
 
   doCheck = false;
 
