@@ -6,12 +6,12 @@ Standalone Nix package for [semble](https://github.com/MinishLab/semble) — ins
 
 ## §C CONSTRAINTS
 
-- C1: Nix flake, nixpkgs follows `github:pr0d1r2/nixpkgs-lock` (fleet pin, currently `nixos-26.05`)
+- C1: Nix flake, nixpkgs follows `github:pr0d1r2/nixpkgs-lock` (fleet pin, currently `nixos-26.05`). Minimum `nixos-26.05`: nix-mcp-python-sdk overrides nixpkgs' httpx2/httpcore2 recipes, absent from `nixos-25.11`
 - C2: 4 systems: aarch64-darwin, x86_64-darwin, x86_64-linux, aarch64-linux
 - C3: Source pinned as `flake = false` input
 - C4: Python build via `buildPythonPackage` — setuptools backend
 - C5: 4 external dep flake inputs: nix-model2vec (>=0.10,<0.11), nix-vicinity, nix-semble-grammars, nix-mcp-python-sdk (mcp >=2.0,<3.0). nixpkgs provides numpy, orjson, pathspec, questionary, tqdm
-- C6: MCP extra included: mcp 2.x from nix-mcp-python-sdk (nixpkgs has 1.x). Bare `semble` runs the MCP server over stdio. `semble install` still writes uvx-based entries (`uvx --from "semble[mcp]==<version>" semble`), which bypass this build; README documents a hand-written entry pointing at the Nix binary, plus the NixOS setup the uvx entries need (nix-ld, or `UV_PYTHON_DOWNLOADS=never` + `UV_PYTHON` + `LD_LIBRARY_PATH`)
+- C6: MCP extra included: mcp 2.x from nix-mcp-python-sdk (nixpkgs has 1.x). Bare `semble` runs the MCP server over stdio. `semble install` still writes uvx-based entries (`uvx --from "semble[mcp]==<version>" semble`), which bypass this build; README documents a hand-written entry pointing at the Nix binary, plus the NixOS setup the uvx entries need (nix-ld, or `UV_PYTHON_DOWNLOADS=never` + `UV_PYTHON` + `LD_LIBRARY_PATH`). `git` is on the wrapper PATH for remote-repo search. `--http` is unauthenticated; README recommends stdio
 - C7: Tests disabled — require model downloads
 - C8: cachix binary cache in `nixConfig`
 - C9: nix-lefthook single input for all CI tooling

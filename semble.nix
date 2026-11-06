@@ -34,6 +34,14 @@ pkgs.python313Packages.buildPythonPackage {
       vicinity
     ]);
 
+  # Searching a remote repository shells out to `git clone`.
+  makeWrapperArgs = [
+    "--prefix"
+    "PATH"
+    ":"
+    (pkgs.lib.makeBinPath [ pkgs.git ])
+  ];
+
   pythonImportsCheck = [
     "semble"
     "semble.mcp"
