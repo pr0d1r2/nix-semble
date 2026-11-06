@@ -30,7 +30,7 @@ nix run github:pr0d1r2/nix-semble
 
 This package provides the `semble` CLI only. The `mcp` extra is not packaged, because it needs `mcp>=2.0` and nixpkgs has 1.x.
 
-`semble install` configures coding agents with an MCP server entry that runs `uvx --from semble==<version> semble`. That entry needs [uv](https://github.com/astral-sh/uv) on the agent's PATH, and uvx fetches semble from PyPI instead of using this Nix build.
+`semble install` configures coding agents with an MCP server entry that runs `uvx --from "semble[mcp]==<version>" semble`. That entry needs [uv](https://github.com/astral-sh/uv) on the agent's PATH, and uvx fetches semble from PyPI instead of using this Nix build.
 
 ## Binary cache
 
